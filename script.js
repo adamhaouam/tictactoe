@@ -3,6 +3,7 @@ function Gameboard() {
     const columns = 3;
     const board = [];
 
+    //Create rows and columns, insert Square 
     for (let i = 0; i < rows; i++) {
         board[i] = [];
         for (let i = 0; i < columns; i++) {
@@ -56,6 +57,60 @@ function Gameboard() {
         checkWin
     }
 }
+
+
+function GameController(
+  playerOneName = "Player One",
+  playerTwoName = "Player Two"
+) {
+	const board = Gameboard();
+	
+	const players = [
+    {
+      name: playerOneName,
+      token: "o"
+    },
+    {
+      name: playerTwoName,
+      token: "x"
+    }
+  ];
+  
+	let currentPlayer = players[0];
+	
+	const switchPlayerTurn = () => {
+		currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
+	};
+	
+	const getCurrentPlayer = () => currentPlayer;
+	
+	const printNewRound = () => {
+		board.printBoard();
+	}
+	const playRound = (row, column) => {
+		console.log(`Placing x on row ${row}, column ${column}`);
+		board.setCell(currentPlayer.token, row,column);
+		printNewRound();
+	};
+	
+	
+	do {
+		console.log(`${getCurrentPlayer().name}'s turn.`);
+		input = prompt("Input:");
+		playRound(input[0],input[1]);
+		switchPlayerTurn();
+	} while (!board.checkWin());
+	switchPlayerTurn();	
+	console.log("done, winnier is ", currentPlayer.token);
+	
+	return {
+		getCurrentPlayer,
+		playRound
+	};
+}
+
+const game = GameController();
+
 
 
 

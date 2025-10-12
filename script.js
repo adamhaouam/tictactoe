@@ -12,8 +12,14 @@ function Gameboard() {
 
     const getBoard = () => board;
 
+    const printBoard = () => {
+		const boardWithCellValues = board.map((row) => row.map((cell) => cell.getSquare()).join(', ')).join('\n');
+		console.log(boardWithCellValues);
+	};
+
     return {
-        getBoard
+        getBoard,
+        printBoard
     }
 }
 

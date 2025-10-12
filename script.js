@@ -1,6 +1,7 @@
 function Gameboard() {
     const rows = 3;
     const columns = 3;
+    let squaresFilled = 0;
     const board = [];
 
     for (let i = 0; i < rows; i++) {
@@ -22,15 +23,17 @@ function Gameboard() {
 	const setCell = (token, row, column) => {
         if (checkEmpty(row, column)) {
             board[row][column].setSquare(token);
+            squaresFilled++;
             return true;
         }
         else return false;
     }
-    
+
+
+    const isFull = () => (squaresFilled == rows * columns);
 
 	const checkWin = () => {
 		let winFound = false;
-		console.log("checking...");
 		for (let a = 0; a < 3; a++) { //check for row win
             if (board[a][0].getSquare() == board[a][1].getSquare() && board[a][1].getSquare() == board[a][2].getSquare() && board[a][0].getSquare() != 0) {
 				console.log(`Found on row ${a}`);
@@ -51,10 +54,6 @@ function Gameboard() {
 			console.log("Found on diagonal");
 			winFound = true;
 		}
-		
-		if (winFound == true) console.log("win!") 
-			else console.log("nope!");
-		
 		return winFound;
 	};
 	
@@ -63,7 +62,7 @@ function Gameboard() {
 		printBoard,
 		setCell,
         checkWin,
-        checkEmpty
+        isFull
 	};
 };
 
@@ -119,21 +118,18 @@ function GameController(
             input = prompt("Taken! Try again:");
         }
         switchPlayerTurn();  
-        //console.log("Token set!");
-
-
-    // console.log(`${getCurrentPlayer().name}'s turn.`);
-    //         input = prompt("Input:");
-    //         console.log("Is empty: ", board.checkEmpty(input[0],input[1]));
-    //         playRound(input[0],input[1]);
-
 	};
 	
-	while (!board.checkWin()){
+	while (!board.checkWin() && !board.isFull()){
         playRound();
     }
-    switchPlayerTurn();
-	console.log("done, winnier is ", currentPlayer.name);
+    
+    if (board.checkWin()) {
+        switchPlayerTurn();
+	    console.log("done, winnier is ", currentPlayer.name);
+    }
+    else console.log("It's a tie!");
+    
 	
 	return {
 		getCurrentPlayer,

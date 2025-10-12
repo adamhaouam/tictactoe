@@ -17,8 +17,17 @@ function Gameboard() {
 		console.log(boardWithCellValues);
 	};
 	
-	const setCell = (token, row, column) => board[row][column].setSquare(token);
-	
+    const checkEmpty = (row, column) => (board[row][column].getSquare() == 0);
+
+	const setCell = (token, row, column) => {
+        if (checkEmpty(row, column)) {
+            board[row][column].setSquare(token);
+            return true;
+        }
+        else return false;
+    }
+    
+
 	const checkWin = () => {
 		let winFound = false;
 		console.log("checking...");
@@ -53,9 +62,10 @@ function Gameboard() {
 		getBoard,
 		printBoard,
 		setCell,
-		checkWin
+        checkWin,
+        checkEmpty
 	};
-}
+};
 
 function Square() {
     let value = 0;
@@ -101,21 +111,29 @@ function GameController(
 	const printNewRound = () => {
 		board.printBoard();
 	}
-	const playRound = (row, column) => {
-		console.log(`Placing x on row ${row}, column ${column}`);
-		board.setCell(currentPlayer.token, row,column);
+	const playRound = () => {
 		printNewRound();
+        console.log(`${getCurrentPlayer().name}'s turn.`);
+        input = prompt("Input:");
+        while (!board.setCell(currentPlayer.token, input[0],input[1])) {
+            input = prompt("Taken! Try again:");
+        }
+        switchPlayerTurn();  
+        //console.log("Token set!");
+
+
+    // console.log(`${getCurrentPlayer().name}'s turn.`);
+    //         input = prompt("Input:");
+    //         console.log("Is empty: ", board.checkEmpty(input[0],input[1]));
+    //         playRound(input[0],input[1]);
+
 	};
 	
-	
-	do {
-		console.log(`${getCurrentPlayer().name}'s turn.`);
-		input = prompt("Input:");
-		playRound(input[0],input[1]);
-		switchPlayerTurn();
-	} while (!board.checkWin());
-	switchPlayerTurn();	
-	console.log("done, winnier is ", currentPlayer.token);
+	while (!board.checkWin()){
+        playRound();
+    }
+    switchPlayerTurn();
+	console.log("done, winnier is ", currentPlayer.name);
 	
 	return {
 		getCurrentPlayer,

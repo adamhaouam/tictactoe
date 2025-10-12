@@ -19,10 +19,41 @@ function Gameboard() {
 		console.log(boardWithCellValues);
 	};
 
+    const checkWin = () => {
+		let winFound = false;
+		console.log("checking...");
+		for (let a = 0; a < 3; a++) { //check for row win
+            if (board[a][0].getSquare() == board[a][1].getSquare() && board[a][1].getSquare() == board[a][2].getSquare() && board[a][0].getSquare() != 0) {
+				console.log(`Found on row ${a}`);
+				winFound = true;
+			}
+		}
+		
+		for (let a = 0; a < 3; a++) { // check for column win
+			if (board[0][a].getSquare() == board[1][a].getSquare() && board[1][a].getSquare() == board[2][a].getSquare() && board[2][a].getSquare() != 0) {
+				console.log(`Found on column ${a}`);
+				winFound = true;
+			}        
+		}
+		
+		//Check for diagonal win
+		if ((board[0][0].getSquare() == board[1][1].getSquare() && board[1][1].getSquare() == board[2][2].getSquare() && board[2][2].getSquare() != 0) || 
+		(board[0][2].getSquare() == board[1][1].getSquare() && board[1][1].getSquare() == board[2][0].getSquare() && board[2][0].getSquare() != 0)) {
+			console.log("Found on diagonal");
+			winFound = true;
+		}
+		
+		if (winFound == true) console.log("win!") 
+			else console.log("nope!");
+		
+		return winFound;
+	};
+
     return {
         getBoard,
         printBoard,
-        setCell
+        setCell,
+        checkWin
     }
 }
 

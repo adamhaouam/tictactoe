@@ -3,24 +3,23 @@ function Gameboard() {
     const columns = 3;
     const board = [];
 
-    //Create rows and columns, insert Square 
     for (let i = 0; i < rows; i++) {
         board[i] = [];
-        for (let i = 0; i < columns; i++) {
+        for (let a = 0; a < columns; a++) {
             board[i].push(Square());
         }
-    }
-
-    const getBoard = () => board;
-
-    const setCell = (token, row, column) => board[row][column].setSquare(token);
-
-    const printBoard = () => {
+    };
+	
+	const getBoard = () => board;
+	
+	const printBoard = () => {
 		const boardWithCellValues = board.map((row) => row.map((cell) => cell.getSquare()).join(', ')).join('\n');
 		console.log(boardWithCellValues);
 	};
-
-    const checkWin = () => {
+	
+	const setCell = (token, row, column) => board[row][column].setSquare(token);
+	
+	const checkWin = () => {
 		let winFound = false;
 		console.log("checking...");
 		for (let a = 0; a < 3; a++) { //check for row win
@@ -49,14 +48,29 @@ function Gameboard() {
 		
 		return winFound;
 	};
+	
+	return {
+		getBoard,
+		printBoard,
+		setCell,
+		checkWin
+	};
+}
+
+function Square() {
+    let value = 0;
+
+    const setSquare = (player) => {
+        value = player;
+    }
+    const getSquare = () => value;
 
     return {
-        getBoard,
-        printBoard,
-        setCell,
-        checkWin
-    }
+        setSquare,
+        getSquare
+    };
 }
+
 
 
 function GameController(
@@ -110,21 +124,3 @@ function GameController(
 }
 
 const game = GameController();
-
-
-
-
-
-function Square() {
-    let value = 0;
-
-    const setSquare = (player) => {
-        value = player;
-    }
-    const getSquare = () => value;
-
-    return {
-        setSquare,
-        getSquare
-    };
-}

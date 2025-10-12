@@ -9,7 +9,16 @@ function Gameboard() {
             board[i].push(Square());
         }
     }
+
+    const getBoard = () => board;
+
+    return {
+        getBoard
+    }
 }
+
+
+
 
 function Square() {
     let value = 0;

@@ -12,6 +12,8 @@ function Gameboard() {
 
     const getBoard = () => board;
 
+    const setCell = (token, row, column) => board[row][column].setSquare(token);
+
     const printBoard = () => {
 		const boardWithCellValues = board.map((row) => row.map((cell) => cell.getSquare()).join(', ')).join('\n');
 		console.log(boardWithCellValues);
@@ -19,7 +21,8 @@ function Gameboard() {
 
     return {
         getBoard,
-        printBoard
+        printBoard,
+        setCell
     }
 }
 

@@ -120,20 +120,21 @@ function GameController(
         switchPlayerTurn();  
 	};
 	
-	while (!board.checkWin() && !board.isFull()){
-        playRound();
-    }
+	// while (!board.checkWin() && !board.isFull()){
+    //     playRound();
+    // }
     
-    if (board.checkWin()) {
-        switchPlayerTurn();
-	    console.log("done, winnier is ", currentPlayer.name);
-    }
-    else console.log("It's a tie!");
+    // if (board.checkWin()) {
+    //     switchPlayerTurn();
+	//     console.log("done, winnier is ", currentPlayer.name);
+    // }
+    // else console.log("It's a tie!");
     
 	
 	return {
 		getCurrentPlayer,
-		playRound
+		playRound,
+        getBoard: board.getBoard
 	};
 }
 
@@ -144,6 +145,33 @@ function ScreenController() {
 	const playerTurnDiv = document.querySelector('.turn');
 	const boardDiv = document.querySelector('.board');
 	
+	const updateScreen = () => {
+		boardDiv.textContent = '';
+		
+		const board = game.getBoard();
+		board.forEach((row, index1) => {
+			row.forEach((square, index2) => {
+				const squareButton = document.createElement("button");
+				squareButton.classList.add("square");
+                squareButton.textContent = square.getSquare();
+                squareButton.dataset.row = index1;
+				squareButton.dataset.column = index2;
+                boardDiv.appendChild(squareButton);
+			})	
+		})
+	};
+	
+	updateScreen();
+
+
+	
+	//while (!board.checkWin() && !board.isFull()){
+		//updateScreen()
+        //playRound();
+    //}
+	
+    //if board is full say tie
+    //else report winner
 
 }
 

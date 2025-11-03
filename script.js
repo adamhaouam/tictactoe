@@ -110,25 +110,24 @@ function GameController(
 	const printNewRound = () => {
 		board.printBoard();
 	}
-	const playRound = () => {
-		printNewRound();
-        console.log(`${getCurrentPlayer().name}'s turn.`);
-        input = prompt("Input:");
-        while (!board.setCell(currentPlayer.token, input[0],input[1])) {
-            input = prompt("Taken! Try again:");
+    
+
+	const playRound = (row, column) => {
+        if (!board.setCell(currentPlayer.token, row, column)) {
+            alert("Taken! Try again:");
+        }      
+
+        else if (!board.checkWin() && !board.isFull()) {
+            switchPlayerTurn(); 
+            return ("No win yet!")
+	        
         }
-        switchPlayerTurn();  
+        else {
+            return ("done, either tie or winnier is ", currentPlayer.name);
+        }
 	};
 	
-	// while (!board.checkWin() && !board.isFull()){
-    //     playRound();
-    // }
-    
-    // if (board.checkWin()) {
-    //     switchPlayerTurn();
-	//     console.log("done, winnier is ", currentPlayer.name);
-    // }
-    // else console.log("It's a tie!");
+
     
 	
 	return {
@@ -161,15 +160,24 @@ function ScreenController() {
 		})
 	};
 	
+    function clickBoard(e) {
+        const selectedRow = e.target.dataset.row;
+        const selectedColumn = e.target.dataset.column;
+        let result = "";
+        if (!selectedRow || !selectedColumn) return;
+
+        //return result and react
+        
+        result = game.playRound(selectedRow, selectedColumn)
+        console.log(result);
+        updateScreen();
+    }
+    boardDiv.addEventListener("click", clickBoard);
+    //if gameover remove event listener
+
 	updateScreen();
 
 
-	
-	//while (!board.checkWin() && !board.isFull()){
-		//updateScreen()
-        //playRound();
-    //}
-	
     //if board is full say tie
     //else report winner
 

@@ -1,3 +1,5 @@
+"use strict";
+
 function Gameboard() {
     const rows = 3;
     const columns = 3;
@@ -33,18 +35,18 @@ function Gameboard() {
     const isFull = () => (squaresFilled == rows * columns);
 
 	const checkWin = () => {
-		let winFound = false;
+		let winFound;
 		for (let a = 0; a < 3; a++) { //check for row win
             if (board[a][0].getSquare() == board[a][1].getSquare() && board[a][1].getSquare() == board[a][2].getSquare() && board[a][0].getSquare() != 0) {
 				console.log(`Found on row ${a}`);
-				winFound = true;
+				winFound = board[a][0].getSquare();
 			}
 		}
 		
 		for (let a = 0; a < 3; a++) { // check for column win
 			if (board[0][a].getSquare() == board[1][a].getSquare() && board[1][a].getSquare() == board[2][a].getSquare() && board[2][a].getSquare() != 0) {
 				console.log(`Found on column ${a}`);
-				winFound = true;
+				winFound = board[0][a].getSquare();
 			}        
 		}
 		
@@ -52,7 +54,7 @@ function Gameboard() {
 		if ((board[0][0].getSquare() == board[1][1].getSquare() && board[1][1].getSquare() == board[2][2].getSquare() && board[2][2].getSquare() != 0) || 
 		(board[0][2].getSquare() == board[1][1].getSquare() && board[1][1].getSquare() == board[2][0].getSquare() && board[2][0].getSquare() != 0)) {
 			console.log("Found on diagonal");
-			winFound = true;
+			winFound = board[0][0].getSquare();
 		}
 		return winFound;
 	};
@@ -87,6 +89,7 @@ function GameController(
   playerTwoName = "Player Two"
 ) {
 	const board = Gameboard();
+    let winStatus;
 	
 	const players = [
     {
@@ -114,17 +117,18 @@ function GameController(
 
 	const playRound = (row, column) => {
         if (!board.setCell(currentPlayer.token, row, column)) {
-            alert("Taken! Try again:");
+            alert("Taken! Try again");
         }      
 
         else if (!board.checkWin() && !board.isFull()) {
             switchPlayerTurn(); 
-            return ("No win yet!")
+            return (`${currentPlayer.name}'s turn`) 
 	        
         }
-        else {
-            return ("done, either tie or winnier is ", currentPlayer.name);
+        else if (board.checkWin()) {
+            return (`Winnier is ${currentPlayer.name}!`);
         }
+        else return ("It's a tie!")
 	};
 	
 
@@ -143,6 +147,7 @@ function ScreenController() {
 	const game = GameController();
 	const playerTurnDiv = document.querySelector('.turn');
 	const boardDiv = document.querySelector('.board');
+    let winStatus;
 	
 	const updateScreen = () => {
 		boardDiv.textContent = '';
@@ -164,21 +169,28 @@ function ScreenController() {
     function clickBoard(e) {
         const selectedRow = e.target.dataset.row;
         const selectedColumn = e.target.dataset.column;
-        let result = "git";
+        let result = "";
         if (!selectedRow || !selectedColumn) return;
 
         //return result and react
         
-        result = game.playRound(selectedRow, selectedColumn)
-        console.log(result);
+        result = game.playRound(selectedRow, selectedColumn);
+        playerTurnDiv.textContent = result;
+        if (result.endsWith("!")) {
+            boardDiv.removeEventListener("click", clickBoard);
+        }
         updateScreen();
     }
+
+
     boardDiv.addEventListener("click", clickBoard);
     //if gameover remove event listener
 
+    //Initial screen update
 	updateScreen();
 
-
+    
+    console.log("!!!!");
     //if board is full say tie
     //else report winner
 

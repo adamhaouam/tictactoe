@@ -10,4 +10,17 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    height: 100vh;
+}
+
+button {
+    background-color: azure;
+}
+
+.o {
+    background-color: teal;
+}
+
+.x {
+    background-color: tomato;
 }

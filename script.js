@@ -69,8 +69,8 @@ function Gameboard() {
 function Square() {
     let value = 0;
 
-    const setSquare = (player) => {
-        value = player;
+    const setSquare = (playerToken) => {
+        value = playerToken;
     }
     const getSquare = () => value;
 
@@ -153,6 +153,7 @@ function ScreenController() {
 				const squareButton = document.createElement("button");
 				squareButton.classList.add("square");
                 squareButton.textContent = square.getSquare();
+                squareButton.classList.add(square.getSquare());
                 squareButton.dataset.row = index1;
 				squareButton.dataset.column = index2;
                 boardDiv.appendChild(squareButton);
@@ -163,7 +164,7 @@ function ScreenController() {
     function clickBoard(e) {
         const selectedRow = e.target.dataset.row;
         const selectedColumn = e.target.dataset.column;
-        let result = "";
+        let result = "git";
         if (!selectedRow || !selectedColumn) return;
 
         //return result and react

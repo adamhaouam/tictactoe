@@ -28,3 +28,12 @@
 }
 
 
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.menu input {
+    margin-bottom: 20px;
+}

@@ -173,7 +173,9 @@ function GameController(
 function ScreenController() {
 	const game = GameController();
     const playerOneName = document.querySelector('#playerOneName');
+    const playerOneColor = document.querySelector('#playerOneColor');
     const playerTwoName = document.querySelector('#playerTwoName');
+    const playerTwoColor = document.querySelector('#playerTwoColor');
 	const playerTurnDiv = document.querySelector('.turn');
 	const boardDiv = document.querySelector('.board');
     //const container = document.querySelector('.container');
@@ -192,6 +194,10 @@ function ScreenController() {
 				const squareButton = document.createElement("button");
 				squareButton.classList.add("square");
                 squareButton.textContent = square.getSquare();
+                
+                //if o set color to playerOneColor
+                if (squareButton.textContent == "o" && playerOneColor.value != "#000000") squareButton.style.backgroundColor = playerOneColor.value;
+                if (squareButton.textContent == "x" && playerTwoColor.value != "#000000") squareButton.style.backgroundColor = playerTwoColor.value;
                 squareButton.classList.add(square.getSquare());
                 squareButton.dataset.row = index1;
 				squareButton.dataset.column = index2;
@@ -231,13 +237,14 @@ function ScreenController() {
         //clear game
         //add menu features
         gameBox.style.display = "none";
-        menuBox.style.display = "block";
+        menuBox.style.display = "flex";
     }
 
     function startGame() {
         menuBox.style.display = "none";
         gameBox.style.display = "block";
         game.updatePlayerNames(playerOneName.value, playerTwoName.value);
+        console.log(playerOneColor.value)
         resetGame();
     }
     

@@ -17,6 +17,11 @@
 
 .board button {
     background-color: azure;
+    color: black;
+    font-weight: bold;
+    font-size: 1.8rem;
+    -webkit-text-stroke-width: 1px; /* Adjust the width of the outline */
+    -webkit-text-stroke-color: white; 
 }
 
 .board .o {

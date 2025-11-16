@@ -89,7 +89,7 @@ function GameController(
   playerTwoName = "Player Two"
 ) {
 	const board = Gameboard();
-    let winStatus;
+    let winStatus = "";
 	
 	const players = [
     {
@@ -110,9 +110,9 @@ function GameController(
 	
 	const getCurrentPlayer = () => currentPlayer;
 	
-	const printNewRound = () => {
-		board.printBoard();
-	}
+	// const printNewRound = () => {
+	// 	board.printBoard();
+	// }
     
 
 	const playRound = (row, column) => {
@@ -126,17 +126,22 @@ function GameController(
 	        
         }
         else if (board.checkWin()) {
-            return (`Winnier is ${currentPlayer.name}!`);
+            winStatus = currentPlayer.name;
+            return (`Winner is ${currentPlayer.name}!`);
         }
-        else return ("It's a tie!")
+        else {
+            winStatus = "tie";
+            return ("It's a tie!");
+        }
 	};
 	
-
+    const getWinStatus = () => winStatus;
     
 	
 	return {
 		getCurrentPlayer,
 		playRound,
+        getWinStatus,
         getBoard: board.getBoard
 	};
 }
@@ -173,10 +178,11 @@ function ScreenController() {
         if (!selectedRow || !selectedColumn) return;
 
         //return result and react
-        
         result = game.playRound(selectedRow, selectedColumn);
         playerTurnDiv.textContent = result;
-        if (result.endsWith("!")) {
+
+        //Removes event listener if game has reached conclusion
+        if (game.getWinStatus() != "") { 
             boardDiv.removeEventListener("click", clickBoard);
         }
         updateScreen();
@@ -184,15 +190,11 @@ function ScreenController() {
 
 
     boardDiv.addEventListener("click", clickBoard);
-    //if gameover remove event listener
 
     //Initial screen update
 	updateScreen();
-
-    
-    console.log("!!!!");
-    //if board is full say tie
-    //else report winner
+    let startingPlayer = game.getCurrentPlayer();
+    playerTurnDiv.textContent = `${startingPlayer.name}'s turn`;
 
 }
 

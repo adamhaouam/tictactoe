@@ -152,6 +152,7 @@ function ScreenController() {
 	const game = GameController();
 	const playerTurnDiv = document.querySelector('.turn');
 	const boardDiv = document.querySelector('.board');
+    const resetButton = document.querySelector('.reset');
     let winStatus;
 	
 	const updateScreen = () => {
@@ -185,11 +186,16 @@ function ScreenController() {
         if (game.getWinStatus() != "") { 
             boardDiv.removeEventListener("click", clickBoard);
         }
+        
         updateScreen();
     }
 
+    function resetGame() {
+        
+    }
 
     boardDiv.addEventListener("click", clickBoard);
+    resetButton.addEventListener("click", resetGame);
 
     //Initial screen update
 	updateScreen();

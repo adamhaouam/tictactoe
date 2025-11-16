@@ -20,7 +20,7 @@ function Gameboard() {
 		console.log(boardWithCellValues);
 	};
 	
-    const checkEmpty = (row, column) => (board[row][column].getSquare() == 0);
+    const checkEmpty = (row, column) => (board[row][column].getSquare() == "-");
 
 	const setCell = (token, row, column) => {
         if (checkEmpty(row, column)) {
@@ -37,39 +37,50 @@ function Gameboard() {
 	const checkWin = () => {
 		let winFound;
 		for (let a = 0; a < 3; a++) { //check for row win
-            if (board[a][0].getSquare() == board[a][1].getSquare() && board[a][1].getSquare() == board[a][2].getSquare() && board[a][0].getSquare() != 0) {
+            if (board[a][0].getSquare() == board[a][1].getSquare() && board[a][1].getSquare() == board[a][2].getSquare() && board[a][0].getSquare() != "-") {
 				console.log(`Found on row ${a}`);
 				winFound = board[a][0].getSquare();
 			}
 		}
 		
 		for (let a = 0; a < 3; a++) { // check for column win
-			if (board[0][a].getSquare() == board[1][a].getSquare() && board[1][a].getSquare() == board[2][a].getSquare() && board[2][a].getSquare() != 0) {
+			if (board[0][a].getSquare() == board[1][a].getSquare() && board[1][a].getSquare() == board[2][a].getSquare() && board[2][a].getSquare() != "-") {
 				console.log(`Found on column ${a}`);
 				winFound = board[0][a].getSquare();
 			}        
 		}
 		
 		//Check for diagonal win
-		if ((board[0][0].getSquare() == board[1][1].getSquare() && board[1][1].getSquare() == board[2][2].getSquare() && board[2][2].getSquare() != 0) || 
-		(board[0][2].getSquare() == board[1][1].getSquare() && board[1][1].getSquare() == board[2][0].getSquare() && board[2][0].getSquare() != 0)) {
+		if ((board[0][0].getSquare() == board[1][1].getSquare() && board[1][1].getSquare() == board[2][2].getSquare() && board[2][2].getSquare() != "-") || 
+		(board[0][2].getSquare() == board[1][1].getSquare() && board[1][1].getSquare() == board[2][0].getSquare() && board[2][0].getSquare() != "-")) {
 			console.log("Found on diagonal");
 			winFound = board[0][0].getSquare();
 		}
 		return winFound;
 	};
+
+    const resetBoard = () => {
+        for (let i = 0; i < rows; i++) {
+            board[i] = [];
+            for (let a = 0; a < columns; a++) {
+                board[i].push(Square());
+            }
+        };
+        squaresFilled = 0;
+    }
 	
 	return {
 		getBoard,
 		printBoard,
 		setCell,
         checkWin,
-        isFull
+        isFull,
+        resetBoard
 	};
 };
 
 function Square() {
-    let value = 0;
+    let value = "-";
 
     const setSquare = (playerToken) => {
         value = playerToken;
@@ -110,10 +121,12 @@ function GameController(
 	
 	const getCurrentPlayer = () => currentPlayer;
 	
-	// const printNewRound = () => {
-	// 	board.printBoard();
-	// }
-    
+	const resetBoard = () => {
+        //reset win functions
+        currentPlayer = players[0];
+        winStatus = "";
+        board.resetBoard();
+    }
 
 	const playRound = (row, column) => {
         if (!board.setCell(currentPlayer.token, row, column)) {
@@ -142,8 +155,10 @@ function GameController(
 		getCurrentPlayer,
 		playRound,
         getWinStatus,
+        resetBoard,
         getBoard: board.getBoard
 	};
+	
 }
 
 
@@ -191,16 +206,16 @@ function ScreenController() {
     }
 
     function resetGame() {
-        
+        game.resetBoard();
+        updateScreen();
+        boardDiv.addEventListener("click", clickBoard);
+        let startingPlayer = game.getCurrentPlayer();
+        playerTurnDiv.textContent = `${startingPlayer.name}'s turn`;
     }
 
-    boardDiv.addEventListener("click", clickBoard);
     resetButton.addEventListener("click", resetGame);
 
-    //Initial screen update
-	updateScreen();
-    let startingPlayer = game.getCurrentPlayer();
-    playerTurnDiv.textContent = `${startingPlayer.name}'s turn`;
+    resetGame();
 
 }
 

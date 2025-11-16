@@ -17,10 +17,10 @@
     background-color: azure;
 }
 
-.o {
+.board .o {
     background-color: teal;
 }
 
-.x {
+.board .x {
     background-color: tomato;
 }

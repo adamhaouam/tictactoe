@@ -3,6 +3,7 @@
     height: 200px;
     display: grid;
     grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
+    margin: 20px;
 }
 
 .container {

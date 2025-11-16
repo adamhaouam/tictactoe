@@ -15,6 +15,7 @@
     flex-direction: column;
     height: 100vh;
     font-family: Arial, Helvetica, sans-serif;
+    flex-grow: 1;
 }
 
 label {
@@ -62,4 +63,18 @@ h1 {
 
 h2 {
     margin: 10px;
+}
+
+.footer {
+    margin-top: auto;
+    height: 20px;
+}
+
+body,html {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
 }

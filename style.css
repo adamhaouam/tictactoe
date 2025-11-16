@@ -1,18 +1,24 @@
 .board {
+    margin-top: 50px;
     width: 200px;
     height: 200px;
     display: grid;
     grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
-    margin: 20px;
+    margin: 10px;
+    margin-bottom: 20px;
     gap: 5px;
 }
 
 .container {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
     height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+label {
+    font-weight: bold;
 }
 
 .board button {
@@ -33,12 +39,27 @@
 }
 
 
-.menu {
+.menu, .game {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 3px;
+    background-color: cornsilk;
+    border: 5px solid rgb(143, 73, 33);
+    border-radius: 5px;
+    height: 400px;
+    width: 400px;
 }
 
 .menu input {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    margin-bottom: 40px;
+}
+
+h2 {
+    margin: 10px;
 }

@@ -99,6 +99,7 @@ function GameController(
   playerOneName = "Player One",
   playerTwoName = "Player Two"
 ) {
+    
 	const board = Gameboard();
     let winStatus = "";
 	
@@ -149,6 +150,11 @@ function GameController(
 	};
 	
     const getWinStatus = () => winStatus;
+
+    const updatePlayerNames = (playerOneName, playerTwoName) => {
+        players[0].name = playerOneName || "Player One";
+        players[1].name = playerTwoName || "Player Two";
+    }
     
 	
 	return {
@@ -156,6 +162,7 @@ function GameController(
 		playRound,
         getWinStatus,
         resetBoard,
+        updatePlayerNames,
         getBoard: board.getBoard
 	};
 	
@@ -165,6 +172,8 @@ function GameController(
 
 function ScreenController() {
 	const game = GameController();
+    const playerOneName = document.querySelector('#playerOneName');
+    const playerTwoName = document.querySelector('#playerTwoName');
 	const playerTurnDiv = document.querySelector('.turn');
 	const boardDiv = document.querySelector('.board');
     //const container = document.querySelector('.container');
@@ -222,13 +231,14 @@ function ScreenController() {
         //clear game
         //add menu features
         gameBox.style.display = "none";
-        menuBox.style.display = "block"
+        menuBox.style.display = "block";
     }
 
     function startGame() {
-        resetGame();
         menuBox.style.display = "none";
         gameBox.style.display = "block";
+        game.updatePlayerNames(playerOneName.value, playerTwoName.value);
+        resetGame();
     }
     
     startButton.addEventListener("click", startGame);

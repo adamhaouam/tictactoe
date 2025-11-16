@@ -167,8 +167,12 @@ function ScreenController() {
 	const game = GameController();
 	const playerTurnDiv = document.querySelector('.turn');
 	const boardDiv = document.querySelector('.board');
+    //const container = document.querySelector('.container');
+    const menuBox = document.querySelector('.menu');
+    const gameBox = document.querySelector('.game');
+    const startButton = document.querySelector('.startButton');
     const resetButton = document.querySelector('.reset');
-    let winStatus;
+    const menuButton = document.querySelector('.return');
 	
 	const updateScreen = () => {
 		boardDiv.textContent = '';
@@ -213,10 +217,25 @@ function ScreenController() {
         playerTurnDiv.textContent = `${startingPlayer.name}'s turn`;
     }
 
+    
+    function openMenu() {
+        //clear game
+        //add menu features
+        gameBox.style.display = "none";
+        menuBox.style.display = "block"
+    }
+
+    function startGame() {
+        resetGame();
+        menuBox.style.display = "none";
+        gameBox.style.display = "block";
+    }
+    
+    startButton.addEventListener("click", startGame);
     resetButton.addEventListener("click", resetGame);
+    menuButton.addEventListener("click", openMenu);
 
-    resetGame();
-
+    openMenu();
 }
 
 ScreenController();
